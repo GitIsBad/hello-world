@@ -1,0 +1,46 @@
+http://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000/001374385852170d9c7adf13c30429b9660d0eb689dd43a000
+GitHub使用总结：
+GitHub是一个基于branch的分布式版本管理工具，最大存储单元是repository，即仓库，一般一个仓库就是对一个project，
+在创建repository时，会默认创建一个branch叫master，在GitHub中master中的数据或者code都是deployable即可发布的，所有的操作都是在是
+在 a branch which created off master ,即分支就是master的试验地且分支是copy from master，在试验地的操作，在认为可以修改的完善了，就可以发起pull request 
+即要求进行和master的合并，合并完毕分支就没有存在的意义了，就可以进行删除分支了。
+
+使用 命令行来操作git
+1.和window的不同 进入文件夹 如 cd /d/test
+2.建立一个repository $git init
+3.添加文件到仓库中 $git add 文件名字  
+4.把文件提交到仓库(执行该动作前需要制定全局参数来设置你的名字和你的电子邮箱)
+5.查看当前repository中文件的状态看看是否被修改了 $git status
+6.查看指定文件的修改状态 git diff filename
+7.进行修改提交的步骤分为两部 1.添加 2.提交
+
+在git中每commit一次就是保存当时次文件的状态，就类似与game的存档 ，可以进行独挡
+目前为止出现了3个版本，可以在之上进行读档
+读取之前版本，在git中head代表当前版本
+git reset --hard head^=head~1 （一个^代表往前一个版本）
+使用git reflog 来查看所有的执行的commit动作和热reset动作
+
+8.查看当前文本内容 cat filename 
+
+git 文件存储位置概念
+工作区：workdirectory（你能看到文件的的地方）
+repository：包含暂存区和仓库
+Git的版本库里存了很多东西，其中最重要的就是称为stage（或者叫index）的暂存区，还有Git为我们自动创建的第一个分支master，
+以及指向master的一个指针叫HEAD。
+暂存区：保存着add的文件 但是还没有 commit的文件都是存放在暂存区的，等待被提交到repository中去
+
+git diff HEAD -- readme.txt命令可以查看工作区和版本库里面最新版本的区别：
+
+git和其他的版本控制不同的地方就是git控制的是修改(不只是文件的内容修改，而是指和原来的工作区不同就是为修改)，
+而不是文件本身，执行add命令加入暂存区的是修改的内容，比如在进行一次修改后add，那么是把此次修改的内容加入到暂存区中，
+再进行修改，此时提交，根据前面的git是暂存修改的原则，第二次修改是不会被提交的仓库的，只会提交第一次的修改，且提示当前有文件
+修改但是未加入暂存区 changes not staged for commit
+10.修改的撤销，当进行文件的修改但还为提交，但是git是已经检测到了你对文件进行了修改的，此时你不想要此次修改进行
+	此时分为2中情况：
+		1.你没有执行add命令即没有放入暂存区，你及时发现了问题，要求git把工作区回复到最新的版本(回到和版本库一模一样的状态)
+		2.一种是readme.txt已经添加到暂存区后，又作了修改，现在，撤销修改就回到添加到暂存区后的状态
+				是先加入暂存区，在进行修改，其实这样撤销就是相当与把加入暂存区后的修改无视了，也不会出现要add加入暂存区后的文件了
+		
+		所以 git checkout 命令就是让这个本地文件回到最近一次git commit或git add时的状态。
+11.撤销修改已经放入暂存区的文件分为2步骤：1：把文件中暂存区中拿走git reset HEAD file可以把暂存区的修改撤销掉（unstage），重新放回工作区：把文件从暂存区中拿走，就相当与该文件没有执行add命令，可以当作add命令的撤销命令
+											2：撤销此次对文件的修改
